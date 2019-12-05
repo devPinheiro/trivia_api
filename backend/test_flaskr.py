@@ -47,6 +47,15 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['categories'])
+    
+    def test_fetch_all_questions(self):
+        res = self.client().get('/questions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['categories'])
+        self.assertTrue(data['questions'])
 
 
     def test_delete_question(self):
@@ -77,6 +86,23 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_400_if_question_bad_request(self):
         res = self.client().post('/questions', json={ })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'bad request')
+
+    def test_search_question(self):
+        res = self.client().post('/questions/search', json={"search_term": "what"})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_questions'])
+
+    def test_search_400_question_bad_request(self):
+        res = self.client().post('/questions/search',
+                                 json={})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
