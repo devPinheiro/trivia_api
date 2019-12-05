@@ -107,8 +107,8 @@ def create_app(test_config=None):
           return jsonify({
                 'success': True,
                 'deleted': question_id,
-                'books': current_questions,
-                'total_books': len(Question.query.all())
+                'questions': current_questions,
+                'total_questions': len(Question.query.all())
             })
 
       except:
@@ -205,6 +205,24 @@ def create_app(test_config=None):
   categories in the left column will cause only questions of that
   category to be shown.
   '''
+  @app.route('/questions/categories/<int:category_id>', methods=['GET'])
+  def get_question_based_category(category_id):
+      try:
+          questions = Question.query.filter(Question.category == category_id).all()
+
+          if questions is None:
+              abort(404)
+          current_questions = paginate_questions(request, questions)
+
+          return jsonify({
+              'success': True,
+              'questions': current_questions,
+              'total_questions': len(current_questions)
+          })
+
+      except:
+          abort(422)
+
 
   '''
   @TODO:

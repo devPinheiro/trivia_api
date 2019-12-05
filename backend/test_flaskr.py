@@ -18,7 +18,7 @@ class TriviaTestCase(unittest.TestCase):
         setup_db(self.app, self.database_path)
         self.new_question = {
             "answer": "Apollo 13",
-            "category": 5,
+            "category": 1,
             "id": 1,
             "difficulty": 4,
             "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
@@ -57,9 +57,24 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data['categories'])
         self.assertTrue(data['questions'])
 
+    def test_get_category_question(self):
+        res = self.client().get('/questions/categories/1')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_category_non_existent_question(self):
+        res = self.client().get('/questions/categories/23')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['message'], "unprocessable")
+        self.assertEqual(data['success'], False)
+
 
     def test_delete_question(self):
-        res = self.client().delete('/questions/1')
+        res = self.client().delete('/questions/4')
         data = json.loads(res.data)
 
         question = Question.query.filter(Question.id == 1).one_or_none()
