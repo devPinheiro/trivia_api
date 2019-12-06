@@ -230,7 +230,11 @@ def create_app(test_config=None):
   This endpoint should take category and previous question parameters
   and return a random questions within the given category,
   if provided, and that is not one of the previous questions.
+  '''
+  @app_route('/questions/<int:question_id>/category/<int:category_id>', METHODS=['POST'])
+  
 
+  '''
   TEST: In the "Play" tab, after a user selects "All" or a category,
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not.
