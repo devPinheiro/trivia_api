@@ -231,8 +231,36 @@ def create_app(test_config=None):
   and return a random questions within the given category,
   if provided, and that is not one of the previous questions.
   '''
-  @app_route('/questions/<int:question_id>/category/<int:category_id>', METHODS=['POST'])
-  
+  @app_route('/quizzes', METHODS=['POST'])
+  def play_quiz():
+      body = request.get_json()
+
+      new_question = body.get('question', None)
+      new_answer = body.get('answer', None)
+      new_category = body.get('category', None)
+      new_difficulty = body.get('difficulty', None)
+
+      try:
+          if body == {}:
+                abort(400)
+          question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
+          question.insert()
+
+          selection = Question.query.order_by(Question.id).all()
+          current_questions = paginate_questions(request, selection)
+          # import pdb
+          # pdb.set_trace()
+
+          return jsonify({
+              'success': True,
+              'created': question.id,
+              'questionss': current_questions,
+              'total_questions': len(Question.query.all())
+          })
+
+      except:
+          abort(400) 
+
 
   '''
   TEST: In the "Play" tab, after a user selects "All" or a category,
