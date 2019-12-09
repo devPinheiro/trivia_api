@@ -235,11 +235,12 @@ def create_app(test_config=None):
   def play_quiz():
       body = request.get_json()
 
-      new_question = body.get('question', None)
-      new_answer = body.get('answer', None)
-      new_category = body.get('category', None)
-      new_difficulty = body.get('difficulty', None)
+      prevous_questions = body.get('prevous_questions', None)
+      quiz_category = body.get(' quiz_category', None)
 
+      questions = Question.query.filter(
+          Question.category == quiz_category).all()
+     
       try:
           if body == {}:
                 abort(400)
@@ -248,8 +249,6 @@ def create_app(test_config=None):
 
           selection = Question.query.order_by(Question.id).all()
           current_questions = paginate_questions(request, selection)
-          # import pdb
-          # pdb.set_trace()
 
           return jsonify({
               'success': True,
