@@ -88,7 +88,268 @@ GET '/categories'
 '6' : "Sports"}
 
 ```
+## Endpoints
 
+GET '/categories'
+
+```
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Request Arguments: None
+- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+{'1' : "Science",
+'2' : "Art",
+'3' : "Geography",
+'4' : "History",
+'5' : "Entertainment",
+'6' : "Sports"}
+
+```
+
+GET '/questions'
+
+```
+- Fetches a paginated dictionary of questions in which the keys are the categories and questions
+- Request Arguments: None
+- Returns: An object with categories, and questions that contains an array of objects of  answer, category_id, difficulty, id, question as keys
+
+{
+  "categories": [
+    {
+      "id": 1, 
+      "type": "Science"
+    }, 
+    {
+      "id": 2, 
+      "type": "Art"
+    }, 
+    {
+      "id": 3, 
+      "type": "Geography"
+    }, 
+    {
+      "id": 4, 
+      "type": "History"
+    }, 
+    {
+      "id": 5, 
+      "type": "Entertainment"
+    }, 
+    {
+      "id": 6, 
+      "type": "Sports"
+    }
+  ], 
+  "questions": [
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }]
+    } 
+
+```
+
+DELETE '/questions/<question_id>'
+
+```
+- Deletes a question with an id provided in the requst
+- Request Arguments: None
+- Request parameter: <question_id>
+- Returns: An object with the following keys and values. 
+{
+                'success': True,
+                'deleted': 3,
+                'questions': [
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }],
+                'total_questions': 10
+            }
+```
+
+POST '/questions'
+
+```
+- Creates a new question by posting a request body that contains answer, category_id, difficulty, id, question as keys
+- Request Arguments: None
+- Request parameter: <question_id>
+- Returns: An object with the following keys and values. 
+{
+              'success': True,
+              'created': 2,
+              'questions': [
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }],
+              'total_questions': 10
+          }
+```
+
+
+GET '/questions/search'
+
+```
+- Fetches questions based on a search term that matches 
+- Request Arguments: {
+  'search_term': 'what is'
+}
+
+- Returns: An object with the following keys and values. 
+{
+                'success': True,
+                'questions': [
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }],
+    'total_questions': 10
+}
+
+```
+
+GET '/categories/<category_id>/questions'
+
+```
+- Fetches questions from a given category with an id provided in the requst
+- Request Arguments: None
+- Request parameter: <category_id>
+- Returns: An object with the following keys and values. 
+{
+                'success': True,
+                'questions': [
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 5, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }],
+    'total_questions': 10
+   }
+
+```
+
+
+POST '/quizzes'
+
+```
+- Fetches questions from a given category with an id provided and previous questions parameter
+- Request Arguments:  {
+    "previous_questions": [{
+                "answer": "Alexander Fleming",
+                "category": 1,
+                "difficulty": 3,
+                "id": 21,
+                "question": "Who discovered penicillin?"
+            }],  
+    "quiz_category": 1
+}
+- Returns: An object with the following keys and values. 
+{
+    "questions": [
+        [
+            {
+                "answer": "The Liver",
+                "category": 1,
+                "difficulty": 4,
+                "id": 20,
+                "question": "What is the heaviest organ in the human body?"
+            },
+            {
+                "answer": "Blood",
+                "category": 1,
+                "difficulty": 4,
+                "id": 22,
+                "question": "Hematology is a branch of medicine involving the study of what?"
+            }
+        ]
+    ],
+    "success": true
+}
+```
 
 ## Testing
 To run the tests, run

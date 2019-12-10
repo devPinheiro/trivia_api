@@ -148,7 +148,7 @@ def create_app(test_config=None):
           return jsonify({
               'success': True,
               'created': question.id,
-              'questionss': current_questions,
+              'questions': current_questions,
               'total_questions': len(Question.query.all())
           })
 
@@ -237,19 +237,20 @@ def create_app(test_config=None):
 
       previous_questions = body.get('previous_questions', None)
       quiz_category = body.get('quiz_category', None)
-
      
       try:
       
-          questions = Question.query.filter(Question.category == quiz_category).all()
+          questionAll = Question.query.filter(Question.category == quiz_category).all()
+          questions = [question.format() for question in questionAll]
           if questions is None:
                 abort(404)
-          quiz = questions - previous_questions
-          current_questions = paginate_questions(request, questions)
+          
+          quiz = [i for i in previous_questions  if i not in questions] \
+                    + [j for j in questions  if j not in previous_questions ] 
 
           return jsonify({
               'success': True,
-              'questions': current_questions,
+              'questions': [quiz],
           })
 
       except:
