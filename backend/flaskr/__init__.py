@@ -148,7 +148,7 @@ def create_app(test_config=None):
           return jsonify({
               'success': True,
               'created': question.id,
-              'questionss': current_questions,
+              'questions': current_questions,
               'total_questions': len(Question.query.all())
           })
 
@@ -205,7 +205,7 @@ def create_app(test_config=None):
   categories in the left column will cause only questions of that
   category to be shown.
   '''
-  @app.route('/questions/categories/<int:category_id>', methods=['GET'])
+  @app.route('/categories/<int:category_id>/questions', methods=['GET'])
   def get_question_based_category(category_id):
       try:
           questions = Question.query.filter(Question.category == category_id).all()
@@ -231,30 +231,26 @@ def create_app(test_config=None):
   and return a random questions within the given category,
   if provided, and that is not one of the previous questions.
   '''
-  @app_route('/quizzes', METHODS=['POST'])
+  @app.route('/quizzes', methods=['POST'])
   def play_quiz():
       body = request.get_json()
 
-      prevous_questions = body.get('prevous_questions', None)
-      quiz_category = body.get(' quiz_category', None)
-
-      questions = Question.query.filter(
-          Question.category == quiz_category).all()
+      previous_questions = body.get('previous_questions', None)
+      quiz_category = body.get('quiz_category', None)
      
       try:
-          if body == {}:
-                abort(400)
-          question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
-          question.insert()
-
-          selection = Question.query.order_by(Question.id).all()
-          current_questions = paginate_questions(request, selection)
+      
+          questionAll = Question.query.filter(Question.category == quiz_category).all()
+          questions = [question.format() for question in questionAll]
+          if questions is None:
+                abort(404)
+          
+          quiz = [i for i in previous_questions  if i not in questions] \
+                    + [j for j in questions  if j not in previous_questions ] 
 
           return jsonify({
               'success': True,
-              'created': question.id,
-              'questionss': current_questions,
-              'total_questions': len(Question.query.all())
+              'questions': [quiz],
           })
 
       except:
