@@ -219,7 +219,7 @@ def create_app(test_config=None):
             questions = Question.query.filter(
                 Question.category == category_id).all()
 
-            if questions is None:
+            if questions == []:
                 abort(404)
             current_questions = paginate_questions(request, questions)
 
@@ -252,7 +252,7 @@ def create_app(test_config=None):
             questionAll = Question.query.filter(
                 Question.category == quiz_category).all()
             questions = [question.format() for question in questionAll]
-            if questions is None:
+            if questions == []:
                 abort(404)
 
             quiz = [i for i in previous_questions if i not in questions] \
